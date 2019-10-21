@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int minEatingSpeed(vector<int>& piles, int H) {
+        int l = 1, r = 1000000000;
+        while (l < r) {
+            int m = (l + r) / 2;
+            int total = 0;
+            for (int p : piles) {
+                total += (p + m - 1) / m;
+            }
+            if (total > H) {
+                l = m + 1; 
+            }
+            else {
+                r = m;
+            }
+        }
+        return l;
+    }
+};
+
+class Solution {
+public:
+    int minEatingSpeed(vector<int>& piles, int H) {      
+        int start = 1;
+        int end  = 0;
+        for (auto i : piles){
+            end = max(end, i);
+        }  
+        while(start < end){ // do not use == because need to find  slowest speed,  for example 1, it is not 5, 
+            int mid = start + (end - start) / 2;
+            if (tempFun(piles, mid)<= H){
+                end = mid;            
+            }      
+            else{              
+                start = mid + 1;
+            }                     
+        }
+        return  end;
+    }  
+    
+    int tempFun(vector<int>& piles, int mid){
+        int ans = 0;
+        for (int i = 0; i < piles.size(); i++){
+            int num = piles[i] / mid;
+            if(num * mid < piles[i]){
+                num++;
+            }
+            ans+= num;
+        }
+        return ans;
+    }
+};
